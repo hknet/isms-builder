@@ -1,54 +1,58 @@
 [
   {
     "id": "CG-GOV-POLICY",
-    "topic": "IS Policies & Governance",
-    "description": "Overarching security policies, strategy and governance structures",
+    "topic": "IS-Richtlinien & Governance",
+    "description": "Übergreifende Sicherheitsrichtlinien, Strategie und Governance-Strukturen",
     "controls": [
-      "ISO-5.1",
-      "ISO-5.4",
+      "ISO27001-A.5.1",
+      "ISO27001-A.5.4",
       "BSI-ISMS.1",
       "NIS2-a",
       "EUCS-GOV.1",
       "EUCS-GOV.2",
       "EUAI-GOV.1",
-      "EUAI-GOV.3"
+      "EUAI-GOV.3",
+      "ISO9001-5.2.1",
+      "ISO9001-5.2.2"
     ]
   },
   {
     "id": "CG-RISK",
-    "topic": "Risk Management",
-    "description": "Risk analysis, assessment and treatment",
+    "topic": "Risikomanagement",
+    "description": "Risikoanalyse, -bewertung und -behandlung",
     "controls": [
-      "ISO-5.1",
+      "ISO27001-A.5.1",
       "BSI-ISMS.2",
       "NIS2-a",
       "EUCS-GOV.3",
       "EUAI-ART9",
-      "EUAI-GOV.2"
+      "EUAI-GOV.2",
+      "ISO9001-6.1"
     ]
   },
   {
     "id": "CG-ROLES",
-    "topic": "Roles & Responsibilities",
-    "description": "Assignment of IS roles, segregation of duties and responsibilities",
+    "topic": "Rollen & Verantwortlichkeiten",
+    "description": "Zuweisung von IS-Rollen, Aufgabentrennung und Verantwortlichkeiten",
     "controls": [
-      "ISO-5.2",
-      "ISO-5.3",
+      "ISO27001-A.5.2",
+      "ISO27001-A.5.3",
       "BSI-ORP.1",
       "BSI-ORP.2",
       "EUCS-GOV.2",
-      "EUAI-GOV.3"
+      "EUAI-GOV.3",
+      "ISO9001-5.3"
     ]
   },
   {
     "id": "CG-ACCESS",
-    "topic": "Access Control & Identity Management",
-    "description": "Access governance, identity management, authentication and permissions",
+    "topic": "Zugangssteuerung & Identitätsmanagement",
+    "description": "Zugangsgovernance, Identitätsmanagement, Authentisierung und Berechtigungen",
     "controls": [
-      "ISO-5.15",
-      "ISO-5.16",
-      "ISO-5.17",
-      "ISO-5.18",
+      "ISO27001-A.5.15",
+      "ISO27001-A.5.16",
+      "ISO27001-A.5.17",
+      "ISO27001-A.5.18",
       "BSI-ORP.4",
       "NIS2-i",
       "NIS2-j",
@@ -59,56 +63,63 @@
   },
   {
     "id": "CG-INCIDENT",
-    "topic": "Incident Management & Incident Response",
-    "description": "Detection, handling, documentation and lessons learned from security incidents",
+    "topic": "Vorfallmanagement & Reaktion",
+    "description": "Detektion, Behandlung, Dokumentation und Lernen aus Sicherheitsvorfällen",
     "controls": [
-      "ISO-5.24",
-      "ISO-5.25",
-      "ISO-5.26",
-      "ISO-5.27",
-      "ISO-5.28",
-      "ISO-6.8",
+      "ISO27001-A.5.24",
+      "ISO27001-A.5.25",
+      "ISO27001-A.5.26",
+      "ISO27001-A.5.27",
+      "ISO27001-A.5.28",
+      "ISO27001-A.6.8",
       "BSI-DER.2",
       "NIS2-b",
       "EUCS-INC.1",
-      "EUCS-INC.2"
+      "EUCS-INC.2",
+      "ISO9001-10.2",
+      "ISO9001-8.7"
     ]
   },
   {
     "id": "CG-BCM",
-    "topic": "Business Continuity & Emergency Preparedness",
-    "description": "Business continuity, backup, disaster recovery and crisis management",
+    "topic": "Geschäftskontinuität & Notfallvorsorge",
+    "description": "Business Continuity, Backup, Disaster Recovery und Krisenmanagement",
     "controls": [
-      "ISO-5.29",
-      "ISO-5.30",
+      "ISO27001-A.5.29",
+      "ISO27001-A.5.30",
       "BSI-DER.4",
       "NIS2-c",
       "EUCS-BCM.1",
-      "EUCS-BCM.2"
+      "EUCS-BCM.2",
+      "ISO9001-6.1",
+      "ISO9001-8.1"
     ]
   },
   {
     "id": "CG-SUPPLY",
-    "topic": "Supply Chain Security & Third Parties",
-    "description": "Security in supply chains, supplier contracts and cloud services",
+    "topic": "Lieferkettensicherheit & Dritte",
+    "description": "Sicherheit in Lieferketten, Lieferantenverträgen und Cloud-Diensten",
     "controls": [
-      "ISO-5.19",
-      "ISO-5.20",
-      "ISO-5.21",
-      "ISO-5.22",
-      "ISO-5.23",
+      "ISO27001-A.5.19",
+      "ISO27001-A.5.20",
+      "ISO27001-A.5.21",
+      "ISO27001-A.5.22",
+      "ISO27001-A.5.23",
       "BSI-OPS.2",
       "NIS2-d",
       "EUCS-SCM.1",
-      "EUCS-SCM.2"
+      "EUCS-SCM.2",
+      "ISO9001-8.4.1",
+      "ISO9001-8.4.2",
+      "ISO9001-8.4.3"
     ]
   },
   {
     "id": "CG-VULN",
-    "topic": "Vulnerability Management & Patching",
-    "description": "Detection, assessment and remediation of vulnerabilities and software patches",
+    "topic": "Schwachstellenmanagement & Patching",
+    "description": "Erkennung, Bewertung und Behebung von Schwachstellen und Software-Patches",
     "controls": [
-      "ISO-8.8",
+      "ISO27001-A.8.8",
       "BSI-DER.3",
       "NIS2-e",
       "EUCS-VUL.1",
@@ -117,37 +128,39 @@
   },
   {
     "id": "CG-CRYPTO",
-    "topic": "Cryptography & Key Management",
-    "description": "Use of cryptography, key management and encryption",
+    "topic": "Kryptografie & Schlüsselverwaltung",
+    "description": "Einsatz von Kryptografie, Schlüsselverwaltung und Verschlüsselung",
     "controls": [
-      "ISO-8.24",
-      "ISO-8.25",
+      "ISO27001-A.8.24",
+      "ISO27001-A.8.25",
       "NIS2-h",
       "EUCS-CRY.1"
     ]
   },
   {
     "id": "CG-LOG",
-    "topic": "Logging & Monitoring",
-    "description": "Event logging, monitoring and audit trails",
+    "topic": "Protokollierung & Überwachung",
+    "description": "Ereignisprotokollierung, Monitoring und Audit-Trails",
     "controls": [
-      "ISO-8.15",
-      "ISO-8.16",
-      "ISO-8.17",
+      "ISO27001-A.8.15",
+      "ISO27001-A.8.16",
+      "ISO27001-A.8.17",
       "BSI-DER.1",
       "EUCS-LOG.1",
-      "EUAI-ART12"
+      "EUAI-ART12",
+      "ISO9001-7.5.3",
+      "ISO9001-9.1.1"
     ]
   },
   {
     "id": "CG-PHYSICAL",
-    "topic": "Physical Security",
-    "description": "Perimeter protection, access control and protection of physical infrastructure",
+    "topic": "Physische Sicherheit",
+    "description": "Perimeterschutz, Zutrittssteuerung und Schutz physischer Infrastruktur",
     "controls": [
-      "ISO-7.1",
-      "ISO-7.2",
-      "ISO-7.3",
-      "ISO-7.4",
+      "ISO27001-A.7.1",
+      "ISO27001-A.7.2",
+      "ISO27001-A.7.3",
+      "ISO27001-A.7.4",
       "BSI-INF.1",
       "BSI-INF.2",
       "EUCS-PHY.1"
@@ -155,84 +168,96 @@
   },
   {
     "id": "CG-TRAINING",
-    "topic": "Training & Awareness",
-    "description": "Security awareness, training and cyber hygiene for employees",
+    "topic": "Schulung & Awareness",
+    "description": "Sicherheits-Awareness, Schulung und Cyberhygiene der Mitarbeitenden",
     "controls": [
-      "ISO-6.3",
+      "ISO27001-A.6.3",
       "BSI-ORP.3",
       "NIS2-g",
-      "EUCS-PEN.1"
+      "EUCS-PEN.1",
+      "ISO9001-7.2",
+      "ISO9001-7.3"
     ]
   },
   {
     "id": "CG-PRIVACY",
-    "topic": "Privacy & Personal Data",
-    "description": "Protection of personal data, classification and data deletion",
+    "topic": "Datenschutz & personenbezogene Daten",
+    "description": "Schutz personenbezogener Daten, Klassifizierung und Datenlöschung",
     "controls": [
-      "ISO-5.34",
-      "ISO-8.11",
-      "ISO-8.12",
+      "ISO27001-A.5.34",
+      "ISO27001-A.8.11",
+      "ISO27001-A.8.12",
       "EUCS-DPR.1",
       "EUCS-DPR.2"
     ]
   },
   {
     "id": "CG-CLASSIFY",
-    "topic": "Information Classification & Asset Management",
-    "description": "Inventory, classification and labelling of information assets",
+    "topic": "Informationsklassifizierung & Asset-Management",
+    "description": "Inventar, Klassifizierung und Kennzeichnung von Informationswerten",
     "controls": [
-      "ISO-5.9",
-      "ISO-5.10",
-      "ISO-5.12",
-      "ISO-5.13",
+      "ISO27001-A.5.9",
+      "ISO27001-A.5.10",
+      "ISO27001-A.5.12",
+      "ISO27001-A.5.13",
       "BSI-ORP.2",
-      "NIS2-i"
+      "NIS2-i",
+      "ISO9001-7.5.2",
+      "ISO9001-7.5.3"
     ]
   },
   {
     "id": "CG-CHANGE",
-    "topic": "Change Management & Configuration Control",
-    "description": "Change management, configuration management and secure development",
+    "topic": "Änderungsmanagement & Konfigurationssteuerung",
+    "description": "Änderungs- und Konfigurationsmanagement sowie sichere Entwicklung",
     "controls": [
-      "ISO-8.32",
+      "ISO27001-A.8.32",
       "BSI-OPS.1",
       "NIS2-e",
       "EUCS-CHM.1",
-      "EUCS-CHM.2"
+      "EUCS-CHM.2",
+      "ISO9001-6.3",
+      "ISO9001-8.5.6"
     ]
   },
   {
     "id": "CG-COMPLY",
-    "topic": "Compliance & Audit Readiness",
-    "description": "Compliance with legal requirements, internal audits and independent reviews",
+    "topic": "Compliance & Audit-Readiness",
+    "description": "Einhaltung gesetzlicher Anforderungen, interne Audits und unabhängige Überprüfungen",
     "controls": [
-      "ISO-5.31",
-      "ISO-5.35",
-      "ISO-5.36",
+      "ISO27001-A.5.31",
+      "ISO27001-A.5.35",
+      "ISO27001-A.5.36",
       "BSI-ISMS.2",
       "NIS2-f",
-      "EUAI-ART43"
+      "EUAI-ART43",
+      "ISO9001-9.2",
+      "ISO9001-9.3.1",
+      "ISO9001-9.3.2",
+      "ISO9001-9.3.3"
     ]
   },
   {
     "id": "CG-HR",
-    "topic": "Personnel Security",
-    "description": "Background checks, onboarding, employment terms and offboarding",
+    "topic": "Personalsicherheit",
+    "description": "Überprüfung, Onboarding, Beschäftigungsbedingungen und Offboarding",
     "controls": [
-      "ISO-6.1",
-      "ISO-6.2",
-      "ISO-6.4",
-      "ISO-6.5",
-      "ISO-6.6",
+      "ISO27001-A.6.1",
+      "ISO27001-A.6.2",
+      "ISO27001-A.6.4",
+      "ISO27001-A.6.5",
+      "ISO27001-A.6.6",
       "BSI-ORP.1",
       "NIS2-i",
-      "EUCS-PEN.1"
+      "EUCS-PEN.1",
+      "ISO9001-7.1.2",
+      "ISO9001-7.2"
     ]
   },
   {
     "id": "CG-AI-RISK",
-    "topic": "AI Risk Classification & Governance",
-    "description": "Inventory, risk classification and governance of deployed AI systems",
+    "topic": "KI-Risikoklassifizierung & Governance",
+    "description": "Inventar, Risikoklassifizierung und Governance eingesetzter KI-Systeme",
     "controls": [
       "EUAI-ART5",
       "EUAI-ART9",
@@ -243,8 +268,8 @@
   },
   {
     "id": "CG-AI-DOC",
-    "topic": "AI Documentation & Transparency",
-    "description": "Technical documentation, transparency obligations and human oversight for high-risk AI",
+    "topic": "KI-Dokumentation & Transparenz",
+    "description": "Technische Dokumentation, Transparenzpflichten und menschliche Aufsicht für Hochrisiko-KI",
     "controls": [
       "EUAI-ART11",
       "EUAI-ART13",
@@ -257,15 +282,16 @@
   },
   {
     "id": "CG-NETWORK",
-    "topic": "Network Security & Segmentation",
-    "description": "Network protection, segmentation, firewalls and secure communications",
+    "topic": "Netzwerksicherheit & Segmentierung",
+    "description": "Netzwerkschutz, Segmentierung, Firewalls und sichere Kommunikation",
     "controls": [
-      "ISO-8.20",
-      "ISO-8.21",
-      "ISO-8.22",
+      "ISO27001-A.8.20",
+      "ISO27001-A.8.21",
+      "ISO27001-A.8.22",
       "BSI-NET.1",
       "BSI-NET.2",
       "EUCS-NET.1"
     ]
   }
 ]
+

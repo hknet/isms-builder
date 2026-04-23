@@ -34,7 +34,9 @@ data.bak.*
 *.bak.*
 /scripts/bacup-and-deploy.sh
 
-# soa.json mit ISO-Controls (urheberrechtlich geschützt, nicht im Repo)
+# ISO import data — never commit
+# User-supplied ISO control files may be copyright-protected and/or sensitive.
+data/iso-controls.json
 data/soa.full.json
 
 # Sensitive runtime data (generated, not needed for demo)

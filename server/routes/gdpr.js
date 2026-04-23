@@ -8,8 +8,10 @@ const multer = require('multer')
 const { requireAuth, authorize } = require('../auth')
 const gdprStore = require('../db/gdprStore')
 
+const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, '../../data')
+
 const gdprUpload = multer({
-  dest: path.join(__dirname, '../../data/gdpr/files/'),
+  dest: path.join(DATA_DIR, 'gdpr/files/'),
   limits: { fileSize: 20 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const allowed = ['.pdf', '.docx', '.doc']

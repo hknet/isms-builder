@@ -412,7 +412,7 @@ function renderFunctionBadges(functions) {
   if (!functions || !functions.length) { container.innerHTML = ''; return }
   const FN_ABBR = { ciso:'CISO', dso:'DSB', qmb:'QMB', bcm_manager:'BCM', dept_head:'AL', auditor:'Aud.', admin_notify:'Admin' }
   container.innerHTML = functions.map(f =>
-    `<span style="font-size:10px;padding:2px 6px;border-radius:3px;background:var(--color-P75,#e3d9ff);color:var(--color-P400,#5243aa);font-weight:600;">${FN_ABBR[f]||f}</span>`
+    `<span class="topbar-fn-badge">${FN_ABBR[f]||f}</span>`
   ).join('')
 }
 
@@ -516,6 +516,9 @@ async function init() {
 
   // ── Navigation befüllen ──
   populateSectionNav()
+  const adminWrap = dom('adminSectionWrap')
+  const adminList = dom('adminNavList')
+  if (adminWrap && adminList && adminList.children.length === 0) adminWrap.style.display = 'none'
 
   // ── Template-Typen als aufklappbarer Tree ──
   const typeListEl = dom('typeList')
@@ -2500,6 +2503,9 @@ function renderSoaContent(container) {
   container.querySelectorAll('.soa-expand-btn').forEach(btn => {
     btn.onclick = () => toggleSoaDetail(btn.dataset.id, container)
   })
+  container.querySelectorAll('.soa-id-link').forEach(btn => {
+    btn.onclick = () => toggleSoaDetail(btn.dataset.id, container)
+  })
 }
 
 function soaRow(c, canEdit) {
@@ -2512,7 +2518,7 @@ function soaRow(c, canEdit) {
     <tr class="soa-row ${c.applicable ? '' : 'soa-row-na'}" data-id="${c.id}">
       <td class="soa-id">
         <button class="soa-expand-btn" data-id="${c.id}" title="Details einblenden">&#9656;</button>
-        ${c.id}
+        <button class="soa-id-link" data-id="${c.id}" title="Details anzeigen">${c.id}</button>
       </td>
       <td><span class="soa-theme-badge" style="border-color:${color};color:${color}">${c.theme}</span></td>
       <td class="soa-ctrl-title">${c.title} ${linkedBadge}</td>

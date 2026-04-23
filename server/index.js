@@ -57,7 +57,7 @@ rbacStore.init()
 // Fallback: provide a minimal setUserTotpSecret if not present in rbacStore
 try {
   if (typeof rbacStore.setUserTotpSecret !== 'function') {
-    const DB_FILE = path.join(__dirname, '../data', 'rbac_users.json')
+    const DB_FILE = path.join(process.env.DATA_DIR || path.join(__dirname, '../data'), 'rbac_users.json')
     rbacStore.setUserTotpSecret = function(username, secret){
       let data = {}
       try { data = JSON.parse(fs.readFileSync(DB_FILE, 'utf8')) } catch {}
@@ -76,7 +76,7 @@ storage.init?.()
 
 // ── Root route ──
 app.get('/', (req, res) => {
-  res.send('ISMS Templates API')
+  res.redirect('/ui/login.html')
 })
 
 // ── Mount routers ──

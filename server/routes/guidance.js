@@ -9,8 +9,10 @@ const { requireAuth, authorize } = require('../auth')
 const guidanceStore = require('../db/guidanceStore')
 const embeddingStore = require('../ai/embeddingStore')
 
+const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, '../../data')
+
 const guidanceUpload = multer({
-  dest: path.join(__dirname, '../../data/guidance/files/'),
+  dest: path.join(DATA_DIR, 'guidance/files/'),
   limits: { fileSize: 20 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
     const allowed = ['.pdf', '.docx', '.doc']
@@ -20,7 +22,7 @@ const guidanceUpload = multer({
   }
 })
 
-const DEMO_LANG_FILE = path.join(__dirname, '../../data/.demo_lang_set')
+const DEMO_LANG_FILE = path.join(DATA_DIR, '.demo_lang_set')
 const SUPPORTED_LANGS = ['de', 'en', 'fr', 'nl']
 
 function _syncSeedLang(lang) {

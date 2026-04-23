@@ -124,7 +124,8 @@ router.patch('/template/:type/:id/status', requireAuth, authorize('editor'), asy
 })
 
 // ── Template-Anhänge ──
-const TMPL_FILES_DIR = path.join(__dirname, '../../data/template-files')
+const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, '../../data')
+const TMPL_FILES_DIR = path.join(DATA_DIR, 'template-files')
 if (!fs.existsSync(TMPL_FILES_DIR)) fs.mkdirSync(TMPL_FILES_DIR, { recursive: true })
 
 const tmplAttachUpload = multer({

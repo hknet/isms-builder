@@ -91,7 +91,8 @@ router.delete('/bcm/exercises/:id', requireAuth, authorize('admin'), (req, res) 
 })
 
 // ── BCM – Dokumenten-Upload ──
-const BCM_FILES_DIR = path.join(__dirname, '../../data/bcm-files')
+const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, '../../data')
+const BCM_FILES_DIR = path.join(DATA_DIR, 'bcm-files')
 if (!fs.existsSync(BCM_FILES_DIR)) fs.mkdirSync(BCM_FILES_DIR, { recursive: true })
 
 const bcmUpload = multer({

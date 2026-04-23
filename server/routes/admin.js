@@ -302,7 +302,7 @@ router.put('/admin/ai-settings', requireAuth, authorize('admin'), async (req, re
 // ── Daten & Wartung ──
 router.get('/admin/export', requireAuth, authorize('admin'), async (req, res) => {
   try {
-    const dataDir = path.join(__dirname, '../../data')
+    const dataDir = DATA_DIR
     const jsonFiles = ['templates.json','soa.json','risks.json','entities.json',
       'rbac_users.json','guidance.json','training.json','public-incidents.json',
       'org-settings.json','custom-lists.json','audit-log.json']
@@ -330,7 +330,7 @@ router.get('/admin/export', requireAuth, authorize('admin'), async (req, res) =>
 router.post('/admin/maintenance/cleanup', requireAuth, authorize('admin'), (req, res) => {
   const results = { removed: [], errors: [] }
   try {
-    const attachDir = path.join(__dirname, '../../data/template-files')
+    const attachDir = path.join(DATA_DIR, 'template-files')
     if (fs.existsSync(attachDir)) {
       const store = require('../db/jsonStore')
       const allTemplates = store.getAll ? store.getAll() : []
