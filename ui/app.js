@@ -98,6 +98,26 @@ function userCanTransition(minRole) {
 }
 
 // ── Language switcher ────────────────────────────────────────────────────────
+function getCurrentTheme() {
+  try { return localStorage.getItem('isms_theme') || 'light' } catch { return 'light' }
+}
+
+function applyTheme(theme) {
+  const next = theme === 'light' ? 'light' : 'dark'
+  document.documentElement.setAttribute('data-theme', next)
+  try { localStorage.setItem('isms_theme', next) } catch {}
+  const btn = document.getElementById('topbarThemeBtn')
+  const label = document.getElementById('topbarThemeLabel')
+  if (btn) btn.title = next === 'dark' ? 'Zu Light Mode wechseln' : 'Zu Dark Mode wechseln'
+  if (label) label.textContent = next === 'dark' ? 'Light' : 'Dark'
+  const icon = btn?.querySelector('i')
+  if (icon) icon.className = `ph ${next === 'dark' ? 'ph-sun-dim' : 'ph-moon'}`
+}
+
+function toggleTheme() {
+  applyTheme(getCurrentTheme() === 'dark' ? 'light' : 'dark')
+}
+
 function switchAppLang(lang) {
   if (typeof setLang === 'function') setLang(lang)
   const msg = document.getElementById('langSaveMsg')
@@ -218,8 +238,8 @@ function _initSemanticSearch() {
       }
       const mode = data.mode || 'keyword'
       const modeBadge = mode === 'semantic'
-        ? '<span style="font-size:10px;padding:1px 6px;border-radius:8px;background:rgba(168,85,247,.15);color:#a855f7;font-weight:600;margin-left:6px;">KI</span>'
-        : '<span style="font-size:10px;padding:1px 6px;border-radius:8px;background:rgba(255,255,255,.08);color:var(--text-subtle);font-weight:600;margin-left:6px;">Keyword</span>'
+        ? '<span style="font-size:10px;padding:1px 6px;border-radius:8px;background:color-mix(in srgb, #a855f7 14%, var(--surface));color:#7e22ce;font-weight:600;margin-left:6px;">KI</span>'
+        : '<span style="font-size:10px;padding:1px 6px;border-radius:8px;background:var(--surface-overlay);color:var(--text-subtle);font-weight:600;margin-left:6px;">Keyword</span>'
       const rows = _results.map((r, i) => {
         const icon = TYPE_ICONS[r.type] || 'ph-magnifying-glass'
         return `<div class="search-result-item" data-idx="${i}" onclick="_searchNavigate('${r.url}')">
@@ -279,45 +299,45 @@ function _searchNavigate(url) {
 // showPolicies: whether to show the policy picker (false for guidance docs)
 function renderLinksBlock(formId, existingControls = [], existingPolicies = [], showPolicies = true) {
   const ctrlChips = existingControls.map(id =>
-    `<span class="link-chip" onclick="removeLinkChip(this,'${formId}_ctrl')" data-val="${escHtml(id)}">${escHtml(id)} <i class="ph ph-x"></i></span>`
+    `<span class="link-chip" data-val="${escHtml(id)}"><span class="link-chip-label" title="${escHtml(id)}">${escHtml(id)}</span><button type="button" class="link-chip-remove" title="Link entfernen" onclick="removeLinkChipConfirm(this,'${formId}_ctrl')"><i class="ph ph-x"></i></button></span>`
   ).join('')
   const polChips = existingPolicies.map(id =>
-    `<span class="link-chip" onclick="removeLinkChip(this,'${formId}_pol')" data-val="${escHtml(id)}">${escHtml(id)} <i class="ph ph-x"></i></span>`
+    `<span class="link-chip" data-val="${escHtml(id)}"><span class="link-chip-label" title="${escHtml(id)}">${escHtml(id)}</span><button type="button" class="link-chip-remove" title="Link entfernen" onclick="removeLinkChipConfirm(this,'${formId}_pol')"><i class="ph ph-x"></i></button></span>`
   ).join('')
 
   const policiesPicker = showPolicies ? `
     <div class="link-picker-group" style="margin-top:10px">
       <label class="form-label" style="margin-bottom:4px">Policies / Templates</label>
-      <div style="display:flex;gap:6px;align-items:flex-start;flex-wrap:wrap">
-        <div>
-          <input id="${formId}_polSearch" class="form-input" style="width:160px;padding:4px 8px;font-size:.8rem" placeholder="Suche…"
+      <div class="link-picker-layout">
+        <div class="link-picker-select-col">
+          <input id="${formId}_polSearch" class="form-input link-picker-search" placeholder="Suche…"
             oninput="filterLinkSelect('${formId}_polSelect', this.value)">
-          <select id="${formId}_polSelect" class="select" multiple size="5" style="margin-top:4px;width:340px;font-size:.8rem"
+          <select id="${formId}_polSelect" class="select link-picker-select" multiple size="5"
             ondblclick="addLinkChip('${formId}_pol', this)"></select>
+          <small class="link-picker-help">Double-click to add</small>
         </div>
-        <div>
+        <div class="link-picker-chip-col">
           <div id="${formId}_pol_chips" class="link-chip-area">${polChips}</div>
-          <small style="color:var(--text-subtle);font-size:.72rem">Double-click to add</small>
         </div>
       </div>
     </div>` : ''
 
   return `
-  <details class="link-picker-details">
+  <details class="link-picker-details" open>
     <summary><i class="ph ph-link"></i> Links</summary>
     <div style="padding:10px 0">
       <div class="link-picker-group">
         <label class="form-label" style="margin-bottom:4px">SoA-Controls</label>
-        <div style="display:flex;gap:6px;align-items:flex-start;flex-wrap:wrap">
-          <div>
-            <input id="${formId}_ctrlSearch" class="form-input" style="width:160px;padding:4px 8px;font-size:.8rem" placeholder="Suche Control-ID…"
+        <div class="link-picker-layout">
+          <div class="link-picker-select-col">
+            <input id="${formId}_ctrlSearch" class="form-input link-picker-search" placeholder="Suche Control-ID…"
               oninput="filterLinkSelect('${formId}_ctrlSelect', this.value)">
-            <select id="${formId}_ctrlSelect" class="select" multiple size="5" style="margin-top:4px;width:340px;font-size:.8rem"
+            <select id="${formId}_ctrlSelect" class="select link-picker-select" multiple size="5"
               ondblclick="addLinkChip('${formId}_ctrl', this)"></select>
+            <small class="link-picker-help">Double-click to add</small>
           </div>
-          <div>
+          <div class="link-picker-chip-col">
             <div id="${formId}_ctrl_chips" class="link-chip-area">${ctrlChips}</div>
-            <small style="color:var(--text-subtle);font-size:.72rem">Double-click to add</small>
           </div>
         </div>
       </div>
@@ -377,13 +397,16 @@ function addLinkChip(areaKey, selectEl) {
   const chip = document.createElement('span')
   chip.className = 'link-chip'
   chip.dataset.val = val
-  chip.innerHTML = `${escHtml(val)} <i class="ph ph-x" onclick="removeLinkChip(this,'${areaKey}')"></i>`
+  chip.innerHTML = `<span class="link-chip-label" title="${escHtml(val)}">${escHtml(val)}</span><button type="button" class="link-chip-remove" title="Link entfernen" onclick="removeLinkChipConfirm(this,'${areaKey}')"><i class="ph ph-x"></i></button>`
   area.appendChild(chip)
 }
 
-// Remove a chip
-function removeLinkChip(iconEl, areaKey) {
-  iconEl.closest('.link-chip')?.remove()
+function removeLinkChipConfirm(btnEl, areaKey) {
+  const chip = btnEl.closest('.link-chip')
+  if (!chip) return
+  const val = chip.dataset.val || ''
+  if (!confirm(`Link "${val}" entfernen?`)) return
+  chip.remove()
 }
 
 // Collect chip values from an area
@@ -417,6 +440,7 @@ function renderFunctionBadges(functions) {
 }
 
 async function init() {
+  applyTheme(getCurrentTheme())
   if (!(await ensureLoginState())) return
 
   // ── Modul-Konfiguration + Nav-Reihenfolge laden ──
@@ -5685,7 +5709,7 @@ async function renderGoals() {
   container.innerHTML = `
     <div class="admin-fullpage">
       <div class="admin-fullpage-header">
-        <h2><i class="ph ph-target"></i> Security Goals <small style="font-size:.7em;font-weight:400;color:var(--text-subtle)">ISO 27001 Kap. 6.2</small></h2>
+        <h2><i class="ph ph-target"></i> ${t('nav_goals')}</h2>
         ${goalCanEdit() ? `<button class="btn btn-primary btn-sm" onclick="openGoalForm()"><i class="ph ph-plus"></i> ${t('goals_new')}</button>` : ''}
       </div>
 
@@ -6144,8 +6168,18 @@ async function renderSettingsPanel() {
       </div>
       <div class="settings-panel">
 
-        <!-- ── Sprache / Language ── -->
-        <div class="settings-section" style="max-width:640px">
+        <!-- ── Erscheinungsbild / Sprache ── -->
+        <div class="settings-section" style="max-width:720px">
+          <h3><i class="ph ph-palette"></i> Appearance</h3>
+          <p class="settings-desc">Choose a light or dark color theme for the user interface.</p>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px;margin-bottom:14px">
+            <button class="btn ${getCurrentTheme()==='light' ? 'btn-primary' : 'btn-secondary'} btn-sm" onclick="applyTheme('light'); renderSettingsPanel()">
+              <i class="ph ph-sun-dim"></i> Light
+            </button>
+            <button class="btn ${getCurrentTheme()==='dark' ? 'btn-primary' : 'btn-secondary'} btn-sm" onclick="applyTheme('dark'); renderSettingsPanel()">
+              <i class="ph ph-moon"></i> Dark
+            </button>
+          </div>
           <h3><i class="ph ph-translate"></i> ${t('settings_lang')}</h3>
           <p class="settings-desc">${t('settings_langDesc')}</p>
           <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px">

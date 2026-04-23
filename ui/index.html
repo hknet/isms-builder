@@ -9,6 +9,16 @@
   <link rel="icon" type="image/x-icon" href="/ui/favicon.ico">
   <link rel="stylesheet" href="vendor/phosphor-regular.css" />
   <link rel="stylesheet" href="style.css" />
+  <script>
+    (function () {
+      try {
+        var theme = localStorage.getItem('isms_theme') || 'light'
+        document.documentElement.setAttribute('data-theme', theme)
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'light')
+      }
+    })()
+  </script>
 </head>
 <body>
 
@@ -30,6 +40,10 @@
     </div>
     <div class="topbar-right">
       <div id="topbarFnBadges" style="display:flex;align-items:center;gap:4px;"></div>
+      <button class="topbar-theme-btn" id="topbarThemeBtn" title="Farbschema umschalten" onclick="toggleTheme()">
+        <i class="ph ph-sun-dim"></i>
+        <span id="topbarThemeLabel">Light</span>
+      </button>
       <button class="topbar-2fa-hint" id="topbar2faHint" style="display:none" title="2FA nicht eingerichtet – jetzt aktivieren" onclick="loadSection('settings')">
         <i class="ph ph-shield-warning"></i>
         <span data-i18n="tfa_hint">2FA nicht aktiv</span>
