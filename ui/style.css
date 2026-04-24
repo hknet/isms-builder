@@ -2281,12 +2281,15 @@ tr.review-upcoming { background: rgba(234,179,8,.05); }
 .link-picker-layout { display:flex; gap:10px; align-items:flex-start; flex-wrap:wrap; }
 .link-picker-select-col { width:340px; max-width:100%; flex:0 0 340px; }
 .link-picker-chip-col { flex:1 1 320px; min-width:280px; max-width:100%; }
+.link-picker-chip-head { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:6px; font-size:.78rem; color:var(--text-subtle); }
+.link-picker-count { display:inline-flex; align-items:center; justify-content:center; min-width:22px; padding:1px 7px; border-radius:999px; background:var(--surface-overlay); color:var(--text); font-weight:600; }
 .link-picker-search { width:100%; padding:4px 8px; font-size:.8rem; }
 .link-picker-select { margin-top:4px; width:100%; font-size:.8rem; }
 .link-picker-help { display:block; color:var(--text-subtle); font-size:.72rem; margin-top:4px; }
 .link-chip-area { display:flex; flex-wrap:wrap; gap:6px; min-height:24px; align-content:flex-start; }
 .link-chip { display:inline-flex; align-items:center; gap:6px; max-width:100%; background:rgba(99,102,241,.15); border:1px solid rgba(99,102,241,.4); color:var(--accent); border-radius:12px; padding:2px 8px; font-size:.75rem; cursor:default; }
-.link-chip-label { overflow-wrap:anywhere; word-break:break-word; }
+.link-chip-label { overflow-wrap:anywhere; word-break:break-word; background:none; border:none; color:inherit; padding:0; margin:0; font:inherit; text-align:left; cursor:pointer; }
+.link-chip-label:hover { text-decoration:underline; }
 .link-chip-remove { display:inline-flex; align-items:center; justify-content:center; background:none; border:none; color:inherit; cursor:pointer; opacity:.7; padding:0; flex-shrink:0; }
 .link-chip-remove:hover { opacity:1; color:var(--danger-text); }
 .link-chip-remove i { font-size:.75rem; }

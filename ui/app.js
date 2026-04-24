@@ -297,13 +297,55 @@ function _searchNavigate(url) {
 // existingControls: array of currently linked control IDs
 // existingPolicies: array of currently linked template IDs (ignored when showPolicies=false)
 // showPolicies: whether to show the policy picker (false for guidance docs)
+let _pendingSoaOpenId = null
+
+function _frameworkFromControlId(id) {
+  if (!id) return null
+  if (id.startsWith('ISO27001-')) return 'ISO27001'
+  if (id.startsWith('ISO9000-'))  return 'ISO9000'
+  if (id.startsWith('ISO9001-'))  return 'ISO9001'
+  if (id.startsWith('BSI-'))      return 'BSI'
+  if (id.startsWith('NIS2-'))     return 'NIS2'
+  if (id.startsWith('EUCS-'))     return 'EUCS'
+  if (id.startsWith('EUAI-'))     return 'EUAI'
+  if (id.startsWith('CRA-'))      return 'CRA'
+  if (id.startsWith('CUSTOM-'))   return 'CUSTOM'
+  return null
+}
+
+async function openLinkedTarget(kind, id) {
+  if (!id) return
+  if (kind === 'ctrl') {
+    const fw = _frameworkFromControlId(id)
+    if (fw) soaActiveFramework = fw
+    _pendingSoaOpenId = id
+    loadSection('soa')
+    return
+  }
+  if (kind === 'pol') {
+    const tmplType = String(id).split('_')[0]
+    try {
+      selectType(tmplType)
+      loadSection('policy')
+      const res = await fetch(`/template/${tmplType}/${encodeURIComponent(id)}`, { headers: apiHeaders('reader') })
+      if (res.ok) loadTemplate(await res.json())
+    } catch {}
+  }
+}
+
+function _sortLinkValues(values = []) {
+  return [...new Set(values)].sort((a, b) => String(a).localeCompare(String(b), 'de', { numeric: true, sensitivity: 'base' }))
+}
+
+function _renderLinkChip(kind, id, areaKey) {
+  return `<span class="link-chip" data-val="${escHtml(id)}"><button type="button" class="link-chip-label" title="${escHtml(id)}" onclick="openLinkedTarget('${kind}','${escHtml(id)}')">${escHtml(id)}</button><button type="button" class="link-chip-remove" title="Link entfernen" onclick="removeLinkChipConfirm(this,'${areaKey}')"><i class="ph ph-x"></i></button></span>`
+}
+
 function renderLinksBlock(formId, existingControls = [], existingPolicies = [], showPolicies = true) {
-  const ctrlChips = existingControls.map(id =>
-    `<span class="link-chip" data-val="${escHtml(id)}"><span class="link-chip-label" title="${escHtml(id)}">${escHtml(id)}</span><button type="button" class="link-chip-remove" title="Link entfernen" onclick="removeLinkChipConfirm(this,'${formId}_ctrl')"><i class="ph ph-x"></i></button></span>`
-  ).join('')
-  const polChips = existingPolicies.map(id =>
-    `<span class="link-chip" data-val="${escHtml(id)}"><span class="link-chip-label" title="${escHtml(id)}">${escHtml(id)}</span><button type="button" class="link-chip-remove" title="Link entfernen" onclick="removeLinkChipConfirm(this,'${formId}_pol')"><i class="ph ph-x"></i></button></span>`
-  ).join('')
+  const sortedControls = _sortLinkValues(existingControls)
+  const sortedPolicies = _sortLinkValues(existingPolicies)
+  const ctrlChips = sortedControls.map(id => _renderLinkChip('ctrl', id, `${formId}_ctrl`)).join('')
+  const polChips = sortedPolicies.map(id => _renderLinkChip('pol', id, `${formId}_pol`)).join('')
 
   const policiesPicker = showPolicies ? `
     <div class="link-picker-group" style="margin-top:10px">
@@ -317,6 +359,7 @@ function renderLinksBlock(formId, existingControls = [], existingPolicies = [], 
           <small class="link-picker-help">Double-click to add</small>
         </div>
         <div class="link-picker-chip-col">
+          <div class="link-picker-chip-head"><strong>Ausgewählt</strong><span id="${formId}_pol_count" class="link-picker-count">${sortedPolicies.length}</span></div>
           <div id="${formId}_pol_chips" class="link-chip-area">${polChips}</div>
         </div>
       </div>
@@ -337,6 +380,7 @@ function renderLinksBlock(formId, existingControls = [], existingPolicies = [], 
             <small class="link-picker-help">Double-click to add</small>
           </div>
           <div class="link-picker-chip-col">
+            <div class="link-picker-chip-head"><strong>Ausgewählt</strong><span id="${formId}_ctrl_count" class="link-picker-count">${sortedControls.length}</span></div>
             <div id="${formId}_ctrl_chips" class="link-chip-area">${ctrlChips}</div>
           </div>
         </div>
@@ -386,6 +430,19 @@ function filterLinkSelect(selectId, search) {
   }
 }
 
+function _updateLinkChipCount(areaKey) {
+  const area = dom(areaKey + '_chips')
+  const countEl = dom(areaKey + '_count')
+  if (area && countEl) countEl.textContent = String(area.querySelectorAll('.link-chip').length)
+}
+
+function _sortLinkChipArea(area) {
+  if (!area) return
+  const chips = [...area.querySelectorAll('.link-chip')]
+  chips.sort((a, b) => String(a.dataset.val || '').localeCompare(String(b.dataset.val || ''), 'de', { numeric: true, sensitivity: 'base' }))
+  chips.forEach(ch => area.appendChild(ch))
+}
+
 // Add selected option to chip area
 function addLinkChip(areaKey, selectEl) {
   const opt = selectEl.options[selectEl.selectedIndex]
@@ -394,11 +451,14 @@ function addLinkChip(areaKey, selectEl) {
   const area = dom(areaKey + '_chips')
   if (!area) return
   if (area.querySelector(`[data-val="${CSS.escape(val)}"]`)) return // already added
+  const kind = areaKey.endsWith('_ctrl') ? 'ctrl' : 'pol'
   const chip = document.createElement('span')
   chip.className = 'link-chip'
   chip.dataset.val = val
-  chip.innerHTML = `<span class="link-chip-label" title="${escHtml(val)}">${escHtml(val)}</span><button type="button" class="link-chip-remove" title="Link entfernen" onclick="removeLinkChipConfirm(this,'${areaKey}')"><i class="ph ph-x"></i></button>`
+  chip.innerHTML = `<button type="button" class="link-chip-label" title="${escHtml(val)}" onclick="openLinkedTarget('${kind}','${escHtml(val)}')">${escHtml(val)}</button><button type="button" class="link-chip-remove" title="Link entfernen" onclick="removeLinkChipConfirm(this,'${areaKey}')"><i class="ph ph-x"></i></button>`
   area.appendChild(chip)
+  _sortLinkChipArea(area)
+  _updateLinkChipCount(areaKey)
 }
 
 function removeLinkChipConfirm(btnEl, areaKey) {
@@ -407,6 +467,7 @@ function removeLinkChipConfirm(btnEl, areaKey) {
   const val = chip.dataset.val || ''
   if (!confirm(`Link "${val}" entfernen?`)) return
   chip.remove()
+  _updateLinkChipCount(areaKey)
 }
 
 // Collect chip values from an area
@@ -422,6 +483,12 @@ async function initLinkPickers(formId, showPolicies = true) {
     loadControlsIntoSelect(`${formId}_ctrlSelect`),
     showPolicies ? loadPoliciesIntoSelect(`${formId}_polSelect`) : Promise.resolve()
   ])
+  _sortLinkChipArea(dom(`${formId}_ctrl_chips`))
+  _updateLinkChipCount(`${formId}_ctrl`)
+  if (showPolicies) {
+    _sortLinkChipArea(dom(`${formId}_pol_chips`))
+    _updateLinkChipCount(`${formId}_pol`)
+  }
 }
 
 function _show2FAHint(show = true) {
@@ -2530,6 +2597,15 @@ function renderSoaContent(container) {
   container.querySelectorAll('.soa-id-link').forEach(btn => {
     btn.onclick = () => toggleSoaDetail(btn.dataset.id, container)
   })
+
+  if (_pendingSoaOpenId) {
+    const targetRow = container.querySelector(`tr[data-id="${_pendingSoaOpenId}"]`)
+    if (targetRow) {
+      targetRow.scrollIntoView({ block: 'center', behavior: 'smooth' })
+      toggleSoaDetail(_pendingSoaOpenId, container)
+      _pendingSoaOpenId = null
+    }
+  }
 }
 
 function soaRow(c, canEdit) {
